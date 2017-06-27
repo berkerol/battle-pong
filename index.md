@@ -25,7 +25,7 @@ change this otherwise use that element's speed multiplier.)
   3. Computer controls left and right paddles.
 * Choose the control type (mouse or keyboard).
 * Specify the label size (text of scores and pause and line for dividing the board).
-* Choose the ball behaviour when it misses the paddle.
+* Choose the ball behavior when it misses the paddle.
   1. Ball starts from middle.
   2. Ball continues and bounces from edge.
 * Reset the ball by pressing _R_.

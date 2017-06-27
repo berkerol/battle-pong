@@ -50,10 +50,10 @@ public class Pong {
         input.nextLine();
         double ballSpeed = input.nextInt() * 1.0 * pixelsPerSecond / framesPerSecond;
         input.nextLine();
-        String[] heightOptions = makeOptions(dimensions[1] - 40);
+        String[] heightOptions = makeOptions(dimensions[1]);
         int boardHeight = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Choose the height of the board.", title,
                 JOptionPane.QUESTION_MESSAGE, null, heightOptions, heightOptions[heightOptions.length - 1]));
-        String[] widthOptions = makeOptions(dimensions[0] - 17);
+        String[] widthOptions = makeOptions(dimensions[0]);
         int boardWidth = Integer.parseInt((String) JOptionPane.showInputDialog(null, "Choose the width of the board.", title,
                 JOptionPane.QUESTION_MESSAGE, null, widthOptions, widthOptions[widthOptions.length - 1]));
         int bounceAngle = input.nextInt();
@@ -83,7 +83,7 @@ public class Pong {
             @Override
             public void run() {
                 frame = new JFrame(title);
-                frame.setSize(boardWidth + 17, boardHeight + 40);
+                frame.setSize(boardWidth, boardHeight);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
