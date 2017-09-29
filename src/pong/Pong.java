@@ -1,6 +1,7 @@
 package pong;
 
 import acm.graphics.GCanvas;
+import acm.graphics.GLabel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
@@ -32,7 +33,7 @@ public class Pong {
         int[] dimensions = {(int) dimension.getWidth(), (int) dimension.getHeight()};
         Scanner input = null;
         try {
-            input = new Scanner(new File("PongConfiguration.ini"));
+            input = new Scanner(new File("PongConfiguration.ini"), "UTF-8");
         }
         catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex, title, JOptionPane.ERROR_MESSAGE);
@@ -98,8 +99,8 @@ public class Pong {
                 canvas.add(background.getFragmentedLanes()[i]);
             }
         }
-        for (int i = 0; i < background.getLabels().length; i++) {
-            canvas.add(background.getLabels()[i]);
+        for (GLabel label : background.getLabels()) {
+            canvas.add(label);
         }
         Ball ball = new Ball(boardWidth / 2.0, random.nextInt(boardHeight / 2), backgroundColor, ballSizeX, ballSizeY, ballSpeed, ballSpeed);
         canvas.add(ball.getImage());
