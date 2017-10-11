@@ -73,6 +73,7 @@ draw();
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
 document.addEventListener("mousemove", mouseMoveHandler);
+window.addEventListener("resize", resizeHandler);
 
 function drawRoundRect(x, y, width, height, radius) {
   ctx.moveTo(x + radius, y);
@@ -214,4 +215,10 @@ function mouseMoveHandler(e) {
   if (gameMode === 0 && e.clientX >= canvas.width / 2) {
     paddleRight.y = e.clientY - canvas.offsetTop - paddleRight.height / 2;
   }
+}
+
+function resizeHandler() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  paddleRight.x = canvas.width - paddleRight.width;
 }
