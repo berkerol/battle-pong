@@ -3,71 +3,51 @@ let ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let scoreLeft = 0;
+let scoreRight = 0;
+let gameMode = 1;
 let ballLeft = false;
 let resetBehavior = true;
-let gameMode = 1;
 
 let ball = {
   x: canvas.width / 2 - 10,
   y: canvas.height / 2 - 10,
-  dx: 13 / Math.sqrt(2),
-  dy: 13 / Math.sqrt(2),
   radius: 10,
+  color: "#0095DD",
   angle: 60,
   speed: 13,
-  color: "#0095DD"
+  speedX: 13 / Math.sqrt(2),
+  speedY: 13 / Math.sqrt(2)
 };
+
+let paddle = {
+  width: 20,
+  height: 150,
+  arc: 10,
+  color: "#0095DD"
+}
 
 let paddleLeft = {
   x: 0,
   y: (canvas.height - 150) / 2,
-  dy: 0,
-  variance: 0,
-  width: 20,
-  height: 150,
-  arc: 10,
   speed: 20,
-  color: "#0095DD"
+  speedY: 0,
+  variance: 0
 };
 
 let paddleRight = {
   x: canvas.width - 20,
   y: (canvas.height - 150) / 2,
-  dy: 0,
-  variance: 0,
-  width: 20,
-  height: 150,
-  arc: 10,
   speed: 20,
-  color: "#0095DD"
+  speedY: 0,
+  variance: 0
 };
 
-function reset(reset) {
-  if (resetBehavior || reset) {
-    if (resetBehavior && !reset) {
-      alert("START AGAIN!");
-    }
-    ball.x = canvas.width / 2 - ball.radius;
-    ball.y = canvas.height / 2 - ball.radius;
-    if (ballLeft) {
-      ball.dx = -ball.speed / Math.sqrt(2);
-    } else {
-      ball.dx = ball.speed / Math.sqrt(2);
-    }
-    ball.dy = ball.speed / Math.sqrt(2);
-  } else {
-    ball.dx = -ball.dx;
-  }
-}
-
-let score = {
-  font: "16px Arial",
+let label = {
+  font: "24px Calibri",
   color: "#0095DD",
-  size: 20
+  margin: 20
 };
-
-let scoreLeft = 0;
-let scoreRight = 0;
 
 draw();
 document.addEventListener("keydown", keyDownHandler);
@@ -75,22 +55,16 @@ document.addEventListener("keyup", keyUpHandler);
 document.addEventListener("mousemove", mouseMoveHandler);
 window.addEventListener("resize", resizeHandler);
 
-function drawRoundRect(x, y, width, height, radius) {
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-}
-
-function fill(color) {
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.closePath();
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBall();
+  drawPaddle(paddleLeft);
+  drawPaddle(paddleRight);
+  drawLabel("Score: " + scoreLeft, 10);
+  drawLabel("Score: " + scoreRight, canvas.width - 120);
+  processBall();
+  processPaddles();
+  requestAnimationFrame(draw);
 }
 
 function drawBall() {
@@ -99,56 +73,67 @@ function drawBall() {
   fill(ball.color);
 }
 
-function drawPaddle(paddle) {
+function drawPaddle(p) {
   ctx.beginPath();
-  drawRoundRect(paddle.x, paddle.y, paddle.width, paddle.height, paddle.arc);
+  ctx.moveTo(p.x + paddle.arc, p.y);
+  ctx.lineTo(p.x + paddle.width - paddle.arc, p.y);
+  ctx.quadraticCurveTo(p.x + paddle.width, p.y, p.x + paddle.width, p.y + paddle.arc);
+  ctx.lineTo(p.x + paddle.width, p.y + paddle.height - paddle.arc);
+  ctx.quadraticCurveTo(p.x + paddle.width, p.y + paddle.height, p.x + paddle.width - paddle.arc, p.y + paddle.height);
+  ctx.lineTo(p.x + paddle.arc, p.y + paddle.height);
+  ctx.quadraticCurveTo(p.x, p.y + paddle.height, p.x, p.y + paddle.height - paddle.arc);
+  ctx.lineTo(p.x, p.y + paddle.arc);
+  ctx.quadraticCurveTo(p.x, p.y, p.x + paddle.arc, p.y);
   fill(paddle.color);
 }
 
-function drawScore(number, position) {
-  ctx.font = score.font;
-  ctx.fillStyle = score.color;
-  ctx.fillText("Score: " + number, position, score.size);
+function drawLabel(text, x) {
+  ctx.font = label.font;
+  ctx.fillStyle = label.color;
+  ctx.fillText(text, x, label.margin);
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBall();
-  drawPaddle(paddleLeft);
-  drawPaddle(paddleRight);
-  drawScore(scoreLeft, 10);
-  drawScore(scoreRight, canvas.width - 80);
-  controlBall();
-  controlPaddle();
-  ball.x += ball.dx;
-  ball.y += ball.dy;
-  if (gameMode === 0 || gameMode === 1 || (gameMode === 2 && ballLeft)) {
-    paddleLeft.y += paddleLeft.dy;
-  }
-  if (gameMode === 0 || ((gameMode === 1 || gameMode === 2) && !ballLeft)) {
-    paddleRight.y += paddleRight.dy;
-  }
-  requestAnimationFrame(draw);
+function fill(color) {
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
 }
 
-function controlBall() {
-  if (ball.y + ball.dy < ball.radius || ball.y + ball.dy > canvas.height - ball.radius) {
-    ball.dy = -ball.dy;
+function processBall() {
+  if (ball.y + ball.speedY < ball.radius || ball.y + ball.speedY > canvas.height - ball.radius) {
+    ball.speedY = -ball.speedY;
   }
-  if (ball.x + ball.dx < ball.radius) {
+  if (ball.x + ball.speedX < ball.radius) {
     jump(paddleLeft, 1, paddleRight);
-  } else if (ball.x + ball.dx > canvas.width - ball.radius) {
+  } else if (ball.x + ball.speedX > canvas.width - ball.radius) {
     jump(paddleRight, -1, paddleLeft);
   }
+  ball.x += ball.speedX;
+  ball.y += ball.speedY;
 }
 
-function jump(paddle, direction, otherPaddle) {
+function processPaddles() {
+  if (gameMode === 2 && ballLeft) {
+    autoPaddle(paddleLeft);
+  }
+  if ((gameMode === 1 || gameMode === 2) && !ballLeft) {
+    autoPaddle(paddleRight);
+  }
+  if (gameMode === 0 || gameMode === 1 || (gameMode === 2 && ballLeft)) {
+    paddleLeft.y += paddleLeft.speedY;
+  }
+  if (gameMode === 0 || ((gameMode === 1 || gameMode === 2) && !ballLeft)) {
+    paddleRight.y += paddleRight.speedY;
+  }
+}
+
+function jump(p1, direction, p2) {
   ballLeft = !ballLeft;
-  if (intersects(ball.x, ball.y, 2 * ball.radius, 2 * ball.radius, paddle.x, paddle.y, paddle.width, paddle.height)) {
-    otherPaddle.variance = Math.random() * otherPaddle.height;
-    let x = (paddle.y + paddle.height / 2.0 - ball.y - ball.radius) / (paddle.height / 2.0);
-    ball.dx = direction * ball.speed * Math.cos(x * ball.angle * Math.PI / 180);
-    ball.dy = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
+  if (intersects(ball.x, ball.y, 2 * ball.radius, 2 * ball.radius, p1.x, p1.y, paddle.width, paddle.height)) {
+    p2.variance = Math.random() * paddle.height;
+    let x = (p1.y + paddle.height / 2.0 - ball.y - ball.radius) / (paddle.height / 2.0);
+    ball.speedX = direction * ball.speed * Math.cos(x * ball.angle * Math.PI / 180);
+    ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
   } else {
     if (ballLeft) {
       scoreLeft++;
@@ -163,32 +148,41 @@ function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
   return x2 < x1 + w1 && x2 + w2 > x1 && y2 < y1 + h1 && y2 + h2 > y1;
 }
 
-function controlPaddle() {
-  if (gameMode === 2 && ballLeft) {
-    autoPaddle(paddleLeft);
-  }
-  if ((gameMode === 1 || gameMode === 2) && !ballLeft) {
-    autoPaddle(paddleRight);
+function reset(reset) {
+  if (resetBehavior || reset) {
+    if (resetBehavior && !reset) {
+      alert("START AGAIN!");
+    }
+    ball.x = canvas.width / 2 - ball.radius;
+    ball.y = canvas.height / 2 - ball.radius;
+    if (ballLeft) {
+      ball.speedX = -ball.speed / Math.sqrt(2);
+    } else {
+      ball.speedX = ball.speed / Math.sqrt(2);
+    }
+    ball.speedY = ball.speed / Math.sqrt(2);
+  } else {
+    ball.speedX = -ball.speedX;
   }
 }
 
-function autoPaddle(paddle) {
-  let x = ball.x - paddle.x;
-  let y = ball.y - paddle.y - paddle.variance;
+function autoPaddle(p) {
+  let x = ball.x - p.x;
+  let y = ball.y - p.y - p.variance;
   let norm = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-  paddle.dy = y / norm * paddle.speed;
+  p.speedY = y / norm * p.speed;
 }
 
 function keyDownHandler(e) {
   if (e.keyCode === 38 && gameMode === 0) {
-    paddleRight.dy = -paddleRight.speed;
+    paddleRight.speedY = -paddleRight.speed;
   } else if (e.keyCode === 40 && gameMode === 0) {
-    paddleRight.dy = paddleRight.speed;
+    paddleRight.speedY = paddleRight.speed;
   }
   if (e.keyCode === 87 && (gameMode === 0 || gameMode === 1)) {
-    paddleLeft.dy = -paddleLeft.speed;
+    paddleLeft.speedY = -paddleLeft.speed;
   } else if (e.keyCode === 83 && (gameMode === 0 || gameMode === 1)) {
-    paddleLeft.dy = paddleLeft.speed;
+    paddleLeft.speedY = paddleLeft.speed;
   }
   if (e.keyCode === 82) {
     reset(true);
@@ -196,29 +190,25 @@ function keyDownHandler(e) {
 }
 
 function keyUpHandler(e) {
-  if (e.keyCode === 38 && gameMode === 0) {
-    paddleRight.dy = 0;
-  } else if (e.keyCode === 40 && gameMode === 0) {
-    paddleRight.dy = 0;
+  if ((e.keyCode === 38 || e.keyCode === 40) && gameMode === 0) {
+    paddleRight.speedY = 0;
   }
-  if (e.keyCode === 87 && (gameMode === 0 || gameMode === 1)) {
-    paddleLeft.dy = 0;
-  } else if (e.keyCode === 83 && (gameMode === 0 || gameMode === 1)) {
-    paddleLeft.dy = 0;
+  if ((e.keyCode === 87 || e.keyCode === 83) && (gameMode === 0 || gameMode === 1)) {
+    paddleLeft.speedY = 0;
   }
 }
 
 function mouseMoveHandler(e) {
   if ((gameMode === 0 && e.clientX < canvas.width / 2) || gameMode === 1) {
-    paddleLeft.y = e.clientY - canvas.offsetTop - paddleLeft.height / 2;
+    paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
   if (gameMode === 0 && e.clientX >= canvas.width / 2) {
-    paddleRight.y = e.clientY - canvas.offsetTop - paddleRight.height / 2;
+    paddleRight.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
 }
 
 function resizeHandler() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  paddleRight.x = canvas.width - paddleRight.width;
+  paddleRight.x = canvas.width - paddle.width;
 }
