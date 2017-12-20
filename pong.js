@@ -44,7 +44,7 @@ let paddleRight = {
 };
 
 let label = {
-  font: "24px Calibri",
+  font: "24px Arial",
   color: "#0095DD",
   margin: 20
 };
@@ -61,7 +61,7 @@ function draw() {
   drawPaddle(paddleLeft);
   drawPaddle(paddleRight);
   drawLabel("Score: " + scoreLeft, 10);
-  drawLabel("Score: " + scoreRight, canvas.width - 120);
+  drawLabel("Score: " + scoreRight, canvas.width - 110);
   processBall();
   processPaddles();
   requestAnimationFrame(draw);
