@@ -5,8 +5,7 @@ canvas.height = window.innerHeight;
 
 let scoreLeft = 0;
 let scoreRight = 0;
-let gameMode = 1;
-let ballLeft = false;
+let gameType = 1;
 let resetBehavior = true;
 
 let ball = {
@@ -17,7 +16,8 @@ let ball = {
   angle: 60,
   speed: 13,
   speedX: 13 / Math.sqrt(2),
-  speedY: 13 / Math.sqrt(2)
+  speedY: 13 / Math.sqrt(2),
+  left: false
 };
 
 let paddle = {
@@ -113,29 +113,29 @@ function processBall() {
 }
 
 function processPaddles() {
-  if (gameMode === 2 && ballLeft) {
+  if (gameType === 2 && ball.left) {
     autoPaddle(paddleLeft);
   }
-  if ((gameMode === 1 || gameMode === 2) && !ballLeft) {
+  if ((gameType === 1 || gameType === 2) && !ball.left) {
     autoPaddle(paddleRight);
   }
-  if (gameMode === 0 || gameMode === 1 || (gameMode === 2 && ballLeft)) {
+  if (gameType === 0 || gameType === 1 || (gameType === 2 && ball.left)) {
     paddleLeft.y += paddleLeft.speedY;
   }
-  if (gameMode === 0 || ((gameMode === 1 || gameMode === 2) && !ballLeft)) {
+  if (gameType === 0 || ((gameType === 1 || gameType === 2) && !ball.left)) {
     paddleRight.y += paddleRight.speedY;
   }
 }
 
 function jump(p1, direction, p2) {
-  ballLeft = !ballLeft;
+  ball.left = !ball.left;
   if (intersects(ball.x, ball.y, 2 * ball.radius, 2 * ball.radius, p1.x, p1.y, paddle.width, paddle.height)) {
     p2.variance = Math.random() * paddle.height;
     let x = (p1.y + paddle.height / 2.0 - ball.y - ball.radius) / (paddle.height / 2.0);
     ball.speedX = direction * ball.speed * Math.cos(x * ball.angle * Math.PI / 180);
     ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
   } else {
-    if (ballLeft) {
+    if (ball.left) {
       scoreLeft++;
     } else {
       scoreRight++;
@@ -155,7 +155,7 @@ function reset(reset) {
     }
     ball.x = canvas.width / 2 - ball.radius;
     ball.y = canvas.height / 2 - ball.radius;
-    if (ballLeft) {
+    if (ball.left) {
       ball.speedX = -ball.speed / Math.sqrt(2);
     } else {
       ball.speedX = ball.speed / Math.sqrt(2);
@@ -174,14 +174,14 @@ function autoPaddle(p) {
 }
 
 function keyDownHandler(e) {
-  if (e.keyCode === 38 && gameMode === 0) {
+  if (e.keyCode === 38 && gameType === 0) {
     paddleRight.speedY = -paddleRight.speed;
-  } else if (e.keyCode === 40 && gameMode === 0) {
+  } else if (e.keyCode === 40 && gameType === 0) {
     paddleRight.speedY = paddleRight.speed;
   }
-  if (e.keyCode === 87 && (gameMode === 0 || gameMode === 1)) {
+  if (e.keyCode === 87 && (gameType === 0 || gameType === 1)) {
     paddleLeft.speedY = -paddleLeft.speed;
-  } else if (e.keyCode === 83 && (gameMode === 0 || gameMode === 1)) {
+  } else if (e.keyCode === 83 && (gameType === 0 || gameType === 1)) {
     paddleLeft.speedY = paddleLeft.speed;
   }
   if (e.keyCode === 82) {
@@ -190,19 +190,19 @@ function keyDownHandler(e) {
 }
 
 function keyUpHandler(e) {
-  if ((e.keyCode === 38 || e.keyCode === 40) && gameMode === 0) {
+  if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 0) {
     paddleRight.speedY = 0;
   }
-  if ((e.keyCode === 87 || e.keyCode === 83) && (gameMode === 0 || gameMode === 1)) {
+  if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 0 || gameType === 1)) {
     paddleLeft.speedY = 0;
   }
 }
 
 function mouseMoveHandler(e) {
-  if ((gameMode === 0 && e.clientX < canvas.width / 2) || gameMode === 1) {
+  if ((gameType === 0 && e.clientX < canvas.width / 2) || gameType === 1) {
     paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
-  if (gameMode === 0 && e.clientX >= canvas.width / 2) {
+  if (gameType === 0 && e.clientX >= canvas.width / 2) {
     paddleRight.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
 }
