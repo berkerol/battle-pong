@@ -184,9 +184,6 @@ function keyDownHandler(e) {
   } else if (e.keyCode === 83 && (gameType === 0 || gameType === 1)) {
     paddleLeft.speedY = paddleLeft.speed;
   }
-  if (e.keyCode === 82) {
-    reset(true);
-  }
 }
 
 function keyUpHandler(e) {
@@ -195,6 +192,9 @@ function keyUpHandler(e) {
   }
   if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 0 || gameType === 1)) {
     paddleLeft.speedY = 0;
+  }
+  if (e.keyCode === 82) {
+    reset(true);
   }
 }
 
