@@ -1,5 +1,7 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
+/* global alert */
+/* global requestAnimationFrame */
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -12,7 +14,7 @@ let ball = {
   x: canvas.width / 2 - 10,
   y: canvas.height / 2 - 10,
   radius: 10,
-  color: "#0095DD",
+  color: '#0095DD',
   angle: 60,
   speed: 13,
   speedX: 13 / Math.sqrt(2),
@@ -24,8 +26,8 @@ let paddle = {
   width: 20,
   height: 150,
   arc: 10,
-  color: "#0095DD"
-}
+  color: '#0095DD'
+};
 
 let paddleLeft = {
   x: 0,
@@ -44,36 +46,36 @@ let paddleRight = {
 };
 
 let label = {
-  font: "24px Arial",
-  color: "#0095DD",
+  font: '24px Arial',
+  color: '#0095DD',
   margin: 20
 };
 
 draw();
-document.addEventListener("keydown", keyDownHandler);
-document.addEventListener("keyup", keyUpHandler);
-document.addEventListener("mousemove", mouseMoveHandler);
-window.addEventListener("resize", resizeHandler);
+document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyup', keyUpHandler);
+document.addEventListener('mousemove', mouseMoveHandler);
+window.addEventListener('resize', resizeHandler);
 
-function draw() {
+function draw () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall();
   drawPaddle(paddleLeft);
   drawPaddle(paddleRight);
-  drawLabel("Score: " + scoreLeft, 10);
-  drawLabel("Score: " + scoreRight, canvas.width - 110);
+  drawLabel('Score: ' + scoreLeft, 10);
+  drawLabel('Score: ' + scoreRight, canvas.width - 110);
   processBall();
   processPaddles();
   requestAnimationFrame(draw);
 }
 
-function drawBall() {
+function drawBall () {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
   fill(ball.color);
 }
 
-function drawPaddle(p) {
+function drawPaddle (p) {
   ctx.beginPath();
   ctx.moveTo(p.x + paddle.arc, p.y);
   ctx.lineTo(p.x + paddle.width - paddle.arc, p.y);
@@ -87,19 +89,19 @@ function drawPaddle(p) {
   fill(paddle.color);
 }
 
-function drawLabel(text, x) {
+function drawLabel (text, x) {
   ctx.font = label.font;
   ctx.fillStyle = label.color;
   ctx.fillText(text, x, label.margin);
 }
 
-function fill(color) {
+function fill (color) {
   ctx.fillStyle = color;
   ctx.fill();
   ctx.closePath();
 }
 
-function processBall() {
+function processBall () {
   if (ball.y + ball.speedY < ball.radius || ball.y + ball.speedY > canvas.height - ball.radius) {
     ball.speedY = -ball.speedY;
   }
@@ -112,7 +114,7 @@ function processBall() {
   ball.y += ball.speedY;
 }
 
-function processPaddles() {
+function processPaddles () {
   if (gameType === 2 && ball.left) {
     autoPaddle(paddleLeft);
   }
@@ -127,7 +129,7 @@ function processPaddles() {
   }
 }
 
-function jump(p1, direction, p2) {
+function jump (p1, direction, p2) {
   ball.left = !ball.left;
   if (intersects(ball.x, ball.y, 2 * ball.radius, 2 * ball.radius, p1.x, p1.y, paddle.width, paddle.height)) {
     p2.variance = Math.random() * paddle.height;
@@ -144,14 +146,14 @@ function jump(p1, direction, p2) {
   }
 }
 
-function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
+function intersects (x1, y1, w1, h1, x2, y2, w2, h2) {
   return x2 < x1 + w1 && x2 + w2 > x1 && y2 < y1 + h1 && y2 + h2 > y1;
 }
 
-function reset(reset) {
+function reset (reset) {
   if (resetBehavior || reset) {
     if (resetBehavior && !reset) {
-      alert("START AGAIN!");
+      alert('START AGAIN!');
     }
     ball.x = canvas.width / 2 - ball.radius;
     ball.y = canvas.height / 2 - ball.radius;
@@ -166,14 +168,14 @@ function reset(reset) {
   }
 }
 
-function autoPaddle(p) {
+function autoPaddle (p) {
   let x = ball.x - p.x;
   let y = ball.y - p.y - p.variance;
   let norm = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
   p.speedY = y / norm * p.speed;
 }
 
-function keyDownHandler(e) {
+function keyDownHandler (e) {
   if (e.keyCode === 38 && gameType === 0) {
     paddleRight.speedY = -paddleRight.speed;
   } else if (e.keyCode === 40 && gameType === 0) {
@@ -186,7 +188,7 @@ function keyDownHandler(e) {
   }
 }
 
-function keyUpHandler(e) {
+function keyUpHandler (e) {
   if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 0) {
     paddleRight.speedY = 0;
   }
@@ -198,7 +200,7 @@ function keyUpHandler(e) {
   }
 }
 
-function mouseMoveHandler(e) {
+function mouseMoveHandler (e) {
   if ((gameType === 0 && e.clientX < canvas.width / 2) || gameType === 1) {
     paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
@@ -207,7 +209,7 @@ function mouseMoveHandler(e) {
   }
 }
 
-function resizeHandler() {
+function resizeHandler () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   paddleRight.x = canvas.width - paddle.width;
