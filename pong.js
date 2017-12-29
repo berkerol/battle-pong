@@ -59,11 +59,17 @@ window.addEventListener('resize', resizeHandler);
 
 function draw () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = ball.color;
   drawBall();
+  ctx.fillStyle = paddle.color;
   drawPaddle(paddleLeft);
   drawPaddle(paddleRight);
-  drawLabel('Score: ' + scoreLeft, 10);
-  drawLabel('Score: ' + scoreRight, canvas.width - 110);
+  ctx.font = label.font;
+  ctx.fillStyle = label.color;
+  drawLabel('Score: ' + paddleLeft.score, 10, label.margin);
+  drawLabel('Rockets: ' + paddleLeft.rockets, 10, 2 * label.margin);
+  drawLabel('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
+  drawLabel('Rockets: ' + paddleRight.rockets, canvas.width - 120, 2 * label.margin);
   processBall();
   processPaddles();
   requestAnimationFrame(draw);
@@ -72,7 +78,8 @@ function draw () {
 function drawBall () {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
-  fill(ball.color);
+  ctx.fill();
+  ctx.closePath();
 }
 
 function drawPaddle (p) {
@@ -86,19 +93,18 @@ function drawPaddle (p) {
   ctx.quadraticCurveTo(p.x, p.y + paddle.height, p.x, p.y + paddle.height - paddle.arc);
   ctx.lineTo(p.x, p.y + paddle.arc);
   ctx.quadraticCurveTo(p.x, p.y, p.x + paddle.arc, p.y);
-  fill(paddle.color);
+  ctx.fill();
+  ctx.closePath();
 }
 
-function drawLabel (text, x) {
-  ctx.font = label.font;
-  ctx.fillStyle = label.color;
-  ctx.fillText(text, x, label.margin);
 }
 
 function fill (color) {
   ctx.fillStyle = color;
   ctx.fill();
   ctx.closePath();
+function drawLabel (text, x, y) {
+  ctx.fillText(text, x, y);
 }
 
 function processBall () {
