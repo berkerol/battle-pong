@@ -51,6 +51,30 @@ let label = {
   margin: 20
 };
 
+let line = {
+  width: label.margin / 4,
+  height: label.margin / 2,
+  color: '#0095DD'
+};
+
+let lines = [];
+
+for (let i = 0; i < canvas.height / line.height; i++) {
+  if (i % 2 === 0) {
+    lines.push({
+      x: canvas.width / 2 - line.width / 2,
+      y: i * line.height
+    });
+  }
+}
+let backgroundCanvas = document.createElement('canvas');
+backgroundCanvas.width = canvas.width;
+backgroundCanvas.height = canvas.height;
+let backgroundCtx = backgroundCanvas.getContext('2d');
+backgroundCtx.fillStyle = line.color;
+for (let l of lines) {
+  backgroundCtx.fillRect(l.x, l.y, line.width, line.height);
+}
 draw();
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
@@ -59,6 +83,7 @@ window.addEventListener('resize', resizeHandler);
 
 function draw () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backgroundCanvas, 0, 0);
   ctx.fillStyle = ball.color;
   drawBall();
   ctx.fillStyle = paddle.color;
