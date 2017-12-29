@@ -27,6 +27,10 @@ Remake of the classic game with different game types. Also a beautiful simulatio
     - Moves up by pressing _UP_.
     - Moves down by pressing _DOWN_.
 
+- Left paddle fires rockets by pressing _D_.
+
+- Right paddle fires rockets by pressing _LEFT_.
+
 - Reset the ball by pressing _R_.
 
 ## Gameplay & Features
