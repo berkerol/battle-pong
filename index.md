@@ -1,6 +1,6 @@
-# Pong
+# Battle Pong
 
-Remake of the classic game with different game types. Also a beautiful simulation when computer controls both of the paddles. Written in ES6\. You can play it [here](https://berkerol.github.io/pong/pong.html).
+Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles. Written in ES6\. You can play it [here](https://berkerol.github.io/battle-pong/battle-pong.html).
 
 ## Controls
 

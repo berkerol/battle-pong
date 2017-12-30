@@ -1,10 +1,10 @@
-# Pong
+# Battle Pong
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/berkerol/battle-pong/issues)
 [![semistandard](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 [![license](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://github.com/berkerol/battle-pong/blob/master/LICENSE)
 
-Remake of the classic game with different game types. Also a beautiful simulation when computer controls both of the paddles. Written in ES6\. You can play it [here](https://berkerol.github.io/pong/pong.html).
+Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles. Written in ES6\. You can play it [here](https://berkerol.github.io/battle-pong/battle-pong.html).
 
 ## Controls
 
