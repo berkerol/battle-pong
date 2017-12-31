@@ -33,6 +33,8 @@ Remake of the classic game with rockets and different game types. Also a beautif
 
 - Reset the ball by pressing _R_.
 
+- Click button to change game type.
+
 ## Gameplay & Features
 
 - Game types

@@ -180,16 +180,16 @@ function processBall () {
 }
 
 function processPaddles () {
-  if (gameType === 2 && ball.left) {
+  if (ball.left && gameType === 0) {
     autoPaddle(paddleLeft);
   }
-  if ((gameType === 1 || gameType === 2) && !ball.left) {
+  if (!ball.left && (gameType === 0 || gameType === 1)) {
     autoPaddle(paddleRight);
   }
-  if (gameType === 0 || gameType === 1 || (gameType === 2 && ball.left)) {
+  if ((ball.left && gameType === 0) || gameType === 1 || gameType === 2) {
     paddleLeft.y += paddleLeft.speedY;
   }
-  if (gameType === 0 || ((gameType === 1 || gameType === 2) && !ball.left)) {
+  if ((!ball.left && (gameType === 0 || gameType === 1)) || gameType === 2) {
     paddleRight.y += paddleRight.speedY;
   }
 }
@@ -265,24 +265,37 @@ function autoPaddle (p) {
   p.speedY = y / norm * p.speed;
 }
 
+function changeType () {
+  if (gameType === 2) {
+    gameType = 0;
+  } else {
+    gameType++;
+  }
+  document.getElementById('type').innerHTML = gameType;
+  paddleLeft.speedY = 0;
+  paddleRight.speedY = 0;
+}
+
 function keyDownHandler (e) {
-  if (e.keyCode === 38 && gameType === 0) {
+  if (e.keyCode === 38 && gameType === 2) {
     paddleRight.speedY = -paddleRight.speed;
-  } else if (e.keyCode === 40 && gameType === 0) {
+  }
+  if (e.keyCode === 40 && gameType === 2) {
     paddleRight.speedY = paddleRight.speed;
   }
-  if (e.keyCode === 87 && (gameType === 0 || gameType === 1)) {
+  if (e.keyCode === 87 && (gameType === 1 || gameType === 2)) {
     paddleLeft.speedY = -paddleLeft.speed;
-  } else if (e.keyCode === 83 && (gameType === 0 || gameType === 1)) {
+  }
+  if (e.keyCode === 83 && (gameType === 1 || gameType === 2)) {
     paddleLeft.speedY = paddleLeft.speed;
   }
 }
 
 function keyUpHandler (e) {
-  if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 0) {
+  if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 2) {
     paddleRight.speedY = 0;
   }
-  if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 0 || gameType === 1)) {
+  if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 1 || gameType === 2)) {
     paddleLeft.speedY = 0;
   }
   if (e.keyCode === 37 && paddleRight.rockets > 0) {
@@ -307,10 +320,10 @@ function keyUpHandler (e) {
 }
 
 function mouseMoveHandler (e) {
-  if ((gameType === 0 && e.clientX < canvas.width / 2) || gameType === 1) {
+  if (gameType === 1 || (gameType === 2 && e.clientX < canvas.width / 2)) {
     paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
-  if (gameType === 0 && e.clientX >= canvas.width / 2) {
+  if (gameType === 2 && e.clientX >= canvas.width / 2) {
     paddleRight.y = e.clientY - canvas.offsetTop - paddle.height / 2;
   }
 }
