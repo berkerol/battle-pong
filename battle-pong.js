@@ -1,5 +1,3 @@
-/* global alert */
-/* global requestAnimationFrame */
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -119,7 +117,8 @@ function draw () {
   drawLabel('Rockets: ' + paddleRight.rockets, canvas.width - 120, 2 * label.margin);
   processBall();
   processPaddles();
-  requestAnimationFrame(draw);
+  processRockets();
+  window.requestAnimationFrame(draw);
 }
 
 function drawBall () {
@@ -217,7 +216,7 @@ function processRockets () {
 function reset (reset) {
   if (resetBehavior || reset) {
     if (resetBehavior && !reset) {
-      alert('START AGAIN!');
+      window.alert('START AGAIN!');
     }
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
