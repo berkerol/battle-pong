@@ -4,7 +4,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let gameType = 1;
-let resetBehavior = true;
+let resetType = true;
 
 let ball = {
   x: canvas.width / 2 - 10,
@@ -214,8 +214,8 @@ function processRockets () {
 }
 
 function reset (reset) {
-  if (resetBehavior || reset) {
-    if (resetBehavior && !reset) {
+  if (resetType || reset) {
+    if (resetType && !reset) {
       window.alert('START AGAIN!');
     }
     ball.x = canvas.width / 2;
@@ -264,15 +264,24 @@ function autoPaddle (p) {
   p.speedY = y / norm * p.speed;
 }
 
-function changeType () {
+function changeGame () {
   if (gameType === 2) {
     gameType = 0;
   } else {
     gameType++;
   }
-  document.getElementById('type').innerHTML = gameType;
+  document.getElementById('change-game').innerHTML = gameType;
   paddleLeft.speedY = 0;
   paddleRight.speedY = 0;
+}
+
+function changeReset () {
+  resetType = !resetType;
+  if (resetType) {
+    document.getElementById('change-reset').innerHTML = 'Ce<span style="text-decoration: underline">n</span>ter';
+  } else {
+    document.getElementById('change-reset').innerHTML = 'Bou<span style="text-decoration: underline">n</span>ce';
+  }
 }
 
 function keyDownHandler (e) {

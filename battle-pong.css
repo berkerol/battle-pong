@@ -7,8 +7,12 @@ canvas {
   display: block;
 }
 
-.type {
+.change-game {
+  position: absolute;
+  right: 50%;
+}
+
+.change-reset {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
 }

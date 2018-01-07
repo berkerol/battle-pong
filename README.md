@@ -39,7 +39,7 @@ Remake of the classic game with rockets and different game types. Also a beautif
 
 - Reset the ball by pressing _R_.
 
-- Click button to change game type.
+- Click buttons to change game type and reset type.
 
 ## Gameplay & Features
 
@@ -49,9 +49,9 @@ Remake of the classic game with rockets and different game types. Also a beautif
   - User controls left and computer controls right paddle.
   - Users control left and right paddles.
 
-- Reset behaviors
+- Reset types
 
-  - Ball starts from middle.
+  - Ball starts from center.
   - Ball continues and bounces from edge.
 
 ## Contribution
