@@ -69,22 +69,9 @@ let line = {
 let lines = [];
 let rockets = [];
 
-for (let i = 0; i < canvas.height / line.height; i++) {
-  if (i % 2 === 0) {
-    lines.push({
-      x: canvas.width / 2 - line.width / 2,
-      y: i * line.height
-    });
-  }
-}
 let backgroundCanvas = document.createElement('canvas');
-backgroundCanvas.width = canvas.width;
-backgroundCanvas.height = canvas.height;
 let backgroundCtx = backgroundCanvas.getContext('2d');
-backgroundCtx.fillStyle = line.color;
-for (let l of lines) {
-  backgroundCtx.fillRect(l.x, l.y, line.width, line.height);
-}
+resizeHandler();
 draw();
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
@@ -340,4 +327,20 @@ function resizeHandler () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   paddleRight.x = canvas.width - paddle.width;
+  lines = [];
+  for (let i = 0; i < canvas.height / line.height; i++) {
+    if (i % 2 === 0) {
+      lines.push({
+        x: canvas.width / 2 - line.width / 2,
+        y: i * line.height
+      });
+    }
+  }
+  backgroundCanvas.width = canvas.width;
+  backgroundCanvas.height = canvas.height;
+  backgroundCtx.fillStyle = line.color;
+  backgroundCtx.clearRect(0, 0, backgroundCtx.width, backgroundCtx.height);
+  for (let l of lines) {
+    backgroundCtx.fillRect(l.x, l.y, line.width, line.height);
+  }
 }
