@@ -12,6 +12,7 @@ let ball = {
   radius: 10,
   color: '#0095DD',
   angle: 60,
+  rocketThreshold: 5,
   speed: 13,
   speedX: 13,
   speedY: 0,
@@ -157,9 +158,15 @@ function processBall () {
   }
   if (ball.x < paddle.width + ball.radius && rectCircle(paddleLeft, ball)) {
     jump(paddleLeft, 1, paddleRight);
+    if (gameType === 0 && paddleLeft.rockets > 0 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
+      fireRocket(paddleLeft, 1);
+    }
   }
   if (ball.x > canvas.width - paddle.width - ball.radius && rectCircle(paddleRight, ball)) {
     jump(paddleRight, -1, paddleLeft);
+    if ((gameType === 0 || gameType === 1) && paddleRight.rockets > 0 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
+      fireRocket(paddleRight, -1);
+    }
   }
   ball.x += ball.speedX;
   ball.y += ball.speedY;
