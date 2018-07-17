@@ -291,7 +291,7 @@ function keyUpHandler (e) {
   if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 1 || gameType === 2)) {
     paddleLeft.speedY = 0;
   }
-  if (e.keyCode === 37 && paddleRight.rockets > 0) {
+  if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets > 0) {
     paddleRight.rockets--;
     rockets.push({
       x: paddleRight.x - rocket.width,
@@ -299,7 +299,7 @@ function keyUpHandler (e) {
       speed: -rocket.speed
     });
   }
-  if (e.keyCode === 68 && paddleLeft.rockets > 0) {
+  if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets > 0) {
     paddleLeft.rockets--;
     rockets.push({
       x: paddleLeft.x + paddle.width,
