@@ -167,17 +167,15 @@ function processBall () {
 
 function processPaddles () {
   if (ball.left && gameType === 0) {
-    autoPaddle(paddleLeft);
+    autoPaddle(ball.x, ball.y, paddleLeft);
+    autoPaddle(canvas.width / 2, canvas.height / 2, paddleRight);
   }
   if (!ball.left && (gameType === 0 || gameType === 1)) {
-    autoPaddle(paddleRight);
+    autoPaddle(ball.x, ball.y, paddleRight);
+    autoPaddle(canvas.width / 2, canvas.height / 2, paddleLeft);
   }
-  if ((ball.left && gameType === 0) || gameType === 1 || gameType === 2) {
-    paddleLeft.y += paddleLeft.speedY;
-  }
-  if ((!ball.left && (gameType === 0 || gameType === 1)) || gameType === 2) {
-    paddleRight.y += paddleRight.speedY;
-  }
+  paddleLeft.y += paddleLeft.speedY;
+  paddleRight.y += paddleRight.speedY;
 }
 
 function processRockets () {
@@ -244,11 +242,11 @@ function jump (p1, direction, p2) {
   ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
 }
 
-function autoPaddle (p) {
-  let x = ball.x - p.x;
-  let y = ball.y - p.y - p.variance;
-  let norm = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-  p.speedY = y / norm * p.speed;
+function autoPaddle (x, y, p) {
+  let dX = x - p.x;
+  let dY = y - p.y - p.variance;
+  let norm = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+  p.speedY = dY / norm * p.speed;
 }
 
 function changeGame () {
