@@ -242,6 +242,15 @@ function jump (p1, direction, p2) {
   ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
 }
 
+function fireRocket (p, direction) {
+  p.rockets--;
+  rockets.push({
+    x: p.x + (direction === 1 ? paddle.width : -rocket.width),
+    y: p.y + paddle.height / 2,
+    speed: direction * rocket.speed
+  });
+}
+
 function autoPaddle (x, y, p) {
   let dX = x - p.x;
   let dY = y - p.y - p.variance;
@@ -292,20 +301,10 @@ function keyUpHandler (e) {
     paddleLeft.speedY = 0;
   }
   if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets > 0) {
-    paddleRight.rockets--;
-    rockets.push({
-      x: paddleRight.x - rocket.width,
-      y: paddleRight.y + paddle.height / 2,
-      speed: -rocket.speed
-    });
+    fireRocket(paddleRight, -1);
   }
   if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets > 0) {
-    paddleLeft.rockets--;
-    rockets.push({
-      x: paddleLeft.x + paddle.width,
-      y: paddleLeft.y + paddle.height / 2,
-      speed: rocket.speed
-    });
+    fireRocket(paddleLeft, 1);
   }
   if (e.keyCode === 82) {
     reset(true);
