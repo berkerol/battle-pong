@@ -31,7 +31,7 @@ let paddleLeft = {
   y: (canvas.height - 150) / 2,
   speed: 15,
   speedY: 0,
-  variance: 0,
+  variance: Math.random() * paddle.height,
   score: 0,
   rockets: 0
 };
@@ -41,7 +41,7 @@ let paddleRight = {
   y: (canvas.height - 150) / 2,
   speed: 15,
   speedY: 0,
-  variance: 0,
+  variance: Math.random() * paddle.height,
   score: 0,
   rockets: 0
 };
@@ -221,6 +221,8 @@ function reset (reset) {
   } else {
     ball.speedX = -ball.speedX;
   }
+  paddleLeft.variance = Math.random() * paddle.height;
+  paddleRight.variance = Math.random() * paddle.height;
   paddleLeft.rockets = 0;
   paddleRight.rockets = 0;
   rockets = [];
