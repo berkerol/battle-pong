@@ -52,7 +52,8 @@ let rocket = {
   lineCap: 'round',
   shadowBlur: 10,
   color: '#FF0000',
-  speed: 30
+  speed: 30,
+  increment: 0.5
 };
 
 let label = {
@@ -100,9 +101,9 @@ function draw () {
   ctx.font = label.font;
   ctx.fillStyle = label.color;
   drawLabel('Score: ' + paddleLeft.score, 10, label.margin);
-  drawLabel('Rockets: ' + paddleLeft.rockets, 10, 2 * label.margin);
+  drawLabel('Rockets: ' + Math.floor(paddleLeft.rockets), 10, 2 * label.margin);
   drawLabel('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
-  drawLabel('Rockets: ' + paddleRight.rockets, canvas.width - 120, 2 * label.margin);
+  drawLabel('Rockets: ' + Math.floor(paddleRight.rockets), canvas.width - 120, 2 * label.margin);
   processBall();
   processPaddles();
   processRockets();
@@ -158,13 +159,13 @@ function processBall () {
   }
   if (ball.x < paddle.width + ball.radius && rectCircle(paddleLeft, ball)) {
     jump(paddleLeft, 1, paddleRight);
-    if (gameType === 0 && paddleLeft.rockets > 0 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
+    if (gameType === 0 && paddleLeft.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
       fireRocket(paddleLeft, 1);
     }
   }
   if (ball.x > canvas.width - paddle.width - ball.radius && rectCircle(paddleRight, ball)) {
     jump(paddleRight, -1, paddleLeft);
-    if ((gameType === 0 || gameType === 1) && paddleRight.rockets > 0 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
+    if ((gameType === 0 || gameType === 1) && paddleRight.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold) {
       fireRocket(paddleRight, -1);
     }
   }
@@ -243,7 +244,7 @@ function rectCircle (r, c) {
 }
 
 function jump (p1, direction, p2) {
-  p1.rockets++;
+  p1.rockets += rocket.increment;
   ball.left = direction !== 1;
   p2.variance = Math.random() * paddle.height;
   let x = (p1.y + paddle.height / 2.0 - ball.y) / (paddle.height / 2.0);
@@ -309,10 +310,10 @@ function keyUpHandler (e) {
   if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 1 || gameType === 2)) {
     paddleLeft.speedY = 0;
   }
-  if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets > 0) {
+  if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets >= 1) {
     fireRocket(paddleRight, -1);
   }
-  if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets > 0) {
+  if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets >= 1) {
     fireRocket(paddleLeft, 1);
   }
   if (e.keyCode === 82) {
