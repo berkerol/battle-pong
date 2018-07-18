@@ -218,12 +218,12 @@ function reset (reset) {
       ball.speedX = ball.speed;
     }
     ball.speedY = 0;
-    paddleLeft.rockets = 0;
-    paddleRight.rockets = 0;
-    rockets = [];
   } else {
     ball.speedX = -ball.speedX;
   }
+  paddleLeft.rockets = 0;
+  paddleRight.rockets = 0;
+  rockets = [];
 }
 
 function rectCircle (r, c) {
