@@ -10,8 +10,10 @@
 </head>
 
 <body>
-  <a class="btn btn-lg btn-info change-game" onclick="changeGame()" accesskey="p"><span class="glyphicon glyphicon-transfer"></span> <span id="change-game">1</span> <span style="text-decoration: underline">P</span>layer</a>
-  <a class="btn btn-lg btn-info change-reset" onclick="changeReset()" accesskey="n"><span class="glyphicon glyphicon-refresh"></span> <span id="change-reset">Ce<span style="text-decoration: underline">n</span>ter</span></a>
+  <div class="btn-group buttons">
+    <a class="btn btn-lg btn-info" onclick="changeGame()" accesskey="p"><span class="glyphicon glyphicon-transfer"></span> <span id="change-game">1</span> <span style="text-decoration: underline">P</span>layer</a>
+    <a class="btn btn-lg btn-info" onclick="changeReset()" accesskey="n"><span class="glyphicon glyphicon-refresh"></span> <span id="change-reset">Ce<span style="text-decoration: underline">n</span>ter</span></a>
+  </div>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
   <script src="battle-pong.js"></script>
 </body>
