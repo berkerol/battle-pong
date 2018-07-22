@@ -100,10 +100,10 @@ function draw () {
   ctx.restore();
   ctx.font = label.font;
   ctx.fillStyle = label.color;
-  drawLabel('Score: ' + paddleLeft.score, 10, label.margin);
-  drawLabel('Rockets: ' + Math.floor(paddleLeft.rockets), 10, 2 * label.margin);
-  drawLabel('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
-  drawLabel('Rockets: ' + Math.floor(paddleRight.rockets), canvas.width - 120, 2 * label.margin);
+  ctx.fillText('Score: ' + paddleLeft.score, 10, label.margin);
+  ctx.fillText('Rockets: ' + Math.floor(paddleLeft.rockets), 10, 2 * label.margin);
+  ctx.fillText('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
+  ctx.fillText('Rockets: ' + Math.floor(paddleRight.rockets), canvas.width - 120, 2 * label.margin);
   processBall();
   processPaddles();
   processRockets();
@@ -138,10 +138,6 @@ function drawRocket (r) {
   ctx.lineTo(r.x + rocket.width, r.y);
   ctx.stroke();
   ctx.closePath();
-}
-
-function drawLabel (text, x, y) {
-  ctx.fillText(text, x, y);
 }
 
 function processBall () {
