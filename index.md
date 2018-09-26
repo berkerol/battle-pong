@@ -2,7 +2,7 @@
 
 Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles. Written in [ES6](https://www.ecma-international.org/ecma-262/6.0/).
 
-[![button](play.png)](https://berkerol.github.io/battle-pong/battle-pong.html)
+[![button](play.png)](battle-pong.html)
 
 ## Controls
 

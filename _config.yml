@@ -1,6 +1,3 @@
-theme:           jekyll-theme-cayman
-title:           Battle Pong
-description:     Remake of the classic game with rockets and different game types
-is_user_page:    false
-is_project_page: true
-show_downloads:  true
+theme: jekyll-theme-cayman
+title: Battle Pong
+play_url: battle-pong.html
