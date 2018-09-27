@@ -1,6 +1,6 @@
 # Battle Pong
 
-Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles. Written in [ES6](https://www.ecma-international.org/ecma-262/6.0/).
+Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles.
 
 [![button](play.png)](battle-pong.html)
 

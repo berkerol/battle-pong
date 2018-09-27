@@ -260,7 +260,7 @@ function fireRocket (p, direction) {
 function autoPaddle (x, y, p) {
   let dX = x - p.x;
   let dY = y - p.y - p.variance;
-  let norm = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+  let norm = Math.sqrt(dX ** 2 + dY ** 2);
   p.speedY = dY / norm * p.speed;
 }
 
