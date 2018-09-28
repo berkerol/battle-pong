@@ -141,25 +141,25 @@ function drawRocket (r) {
 }
 
 function processBall () {
-  if (ball.y < ball.radius || ball.y > canvas.height - ball.radius) {
+  if ((ball.y < ball.radius && ball.speedY < 0) || (ball.y > canvas.height - ball.radius && ball.speedY > 0)) {
     ball.speedY = -ball.speedY;
   }
-  if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) {
+  if ((ball.x < ball.radius && ball.speedX < 0) || (ball.x > canvas.width - ball.radius && ball.speedX > 0)) {
     ball.left = !ball.left;
-    if (ball.x < ball.radius) {
+    if (ball.x < ball.radius && ball.speedX < 0) {
       paddleRight.score++;
     } else {
       paddleLeft.score++;
     }
     reset(false);
   }
-  if (ball.x < paddle.width + ball.radius && rectCircle(paddleLeft, ball)) {
+  if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && rectCircle(paddleLeft, ball)) {
     jump(paddleLeft, 1, paddleRight);
     if (gameType === 0 && (paddleLeft.rockets >= 2 || (paddleLeft.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleLeft, 1);
     }
   }
-  if (ball.x > canvas.width - paddle.width - ball.radius && rectCircle(paddleRight, ball)) {
+  if (ball.x > canvas.width - paddle.width - ball.radius && ball.speedX > 0 && rectCircle(paddleRight, ball)) {
     jump(paddleRight, -1, paddleLeft);
     if ((gameType === 0 || gameType === 1) && (paddleRight.rockets >= 2 || (paddleRight.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleRight, -1);
