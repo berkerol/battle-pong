@@ -172,13 +172,13 @@ function processBall (frames) {
     }
     reset(false, false);
   }
-  if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && rectCircle(paddleLeft, ball)) {
+  if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && intersects(paddleLeft, ball)) {
     jump(paddleLeft, 1, paddleRight);
     if (gameType === 0 && (paddleLeft.rockets >= 2 || (paddleLeft.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleLeft, 1);
     }
   }
-  if (ball.x > canvas.width - paddle.width - ball.radius && ball.speedX > 0 && rectCircle(paddleRight, ball)) {
+  if (ball.x > canvas.width - paddle.width - ball.radius && ball.speedX > 0 && intersects(paddleRight, ball)) {
     jump(paddleRight, -1, paddleLeft);
     if ((gameType === 0 || gameType === 1) && (paddleRight.rockets >= 2 || (paddleRight.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleRight, -1);
@@ -244,7 +244,7 @@ function reset (reset, rocket) {
   rockets = [];
 }
 
-function rectCircle (r, c) {
+function intersects (r, c) {
   let distX = Math.abs(c.x - r.x - paddle.width / 2);
   let distY = Math.abs(c.y - r.y - paddle.height / 2);
   if (distX > (paddle.width / 2 + c.radius) || distY > (paddle.height / 2 + c.radius)) {
@@ -253,9 +253,9 @@ function rectCircle (r, c) {
   if (distX <= (paddle.width / 2) || distY <= (paddle.height / 2)) {
     return true;
   }
-  let dx = distX - paddle.width / 2;
-  let dy = distY - paddle.height / 2;
-  return (dx * dx + dy * dy <= (c.radius * c.radius));
+  let dX = distX - paddle.width / 2;
+  let dY = distY - paddle.height / 2;
+  return (dX * dX + dY * dY <= (c.radius * c.radius));
 }
 
 function jump (p1, direction, p2) {
