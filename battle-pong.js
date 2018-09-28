@@ -151,7 +151,7 @@ function processBall () {
     } else {
       paddleLeft.score++;
     }
-    reset(false);
+    reset(false, false);
   }
   if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && rectCircle(paddleLeft, ball)) {
     jump(paddleLeft, 1, paddleRight);
@@ -187,12 +187,12 @@ function processRockets () {
     let r = rockets[i];
     if (r.x < paddle.width && r.y >= paddleLeft.y && r.y <= paddleLeft.y + paddle.height) {
       paddleRight.score++;
-      reset(false);
+      reset(false, true);
       break;
     }
     if (r.x > canvas.width - paddle.width - rocket.width && r.y >= paddleRight.y && r.y <= paddleRight.y + paddle.height) {
       paddleLeft.score++;
-      reset(false);
+      reset(false, true);
       break;
     }
     if (r.x < 0 || r.x > canvas.width - rocket.width) {
@@ -202,7 +202,7 @@ function processRockets () {
   }
 }
 
-function reset (reset) {
+function reset (reset, rocket) {
   if (resetType || reset) {
     if (resetType && !reset) {
       window.alert('START AGAIN!');
@@ -215,7 +215,7 @@ function reset (reset) {
       ball.speedX = ball.speed;
     }
     ball.speedY = 0;
-  } else {
+  } else if (!rocket) {
     ball.speedX = -ball.speedX;
   }
   paddleLeft.variance = Math.random() * paddle.height;
@@ -313,7 +313,7 @@ function keyUpHandler (e) {
     fireRocket(paddleLeft, 1);
   }
   if (e.keyCode === 82) {
-    reset(true);
+    reset(true, false);
   }
 }
 
