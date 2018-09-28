@@ -1,7 +1,13 @@
+/* global performance */
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+const getTime = typeof performance === 'function' ? performance.now : Date.now;
+const FRAME_DURATION = 1000 / 58;
+let then = getTime();
+let acc = 0;
 
 let gameType = 1;
 let resetType = true;
@@ -81,6 +87,19 @@ document.addEventListener('mousemove', mouseMoveHandler);
 window.addEventListener('resize', resizeHandler);
 
 function draw () {
+  let now = getTime();
+  let ms = now - then;
+  let frames = 0;
+  then = now;
+  if (ms < 1000) {
+    acc += ms;
+    while (acc >= FRAME_DURATION) {
+      frames++;
+      acc -= FRAME_DURATION;
+    }
+  } else {
+    ms = 0;
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backgroundCanvas, 0, 0);
   ctx.fillStyle = ball.color;
@@ -104,9 +123,9 @@ function draw () {
   ctx.fillText('Rockets: ' + Math.floor(paddleLeft.rockets), 10, 2 * label.margin);
   ctx.fillText('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
   ctx.fillText('Rockets: ' + Math.floor(paddleRight.rockets), canvas.width - 120, 2 * label.margin);
-  processBall();
-  processPaddles();
-  processRockets();
+  processBall(frames);
+  processPaddles(frames);
+  processRockets(frames);
   window.requestAnimationFrame(draw);
 }
 
@@ -140,7 +159,7 @@ function drawRocket (r) {
   ctx.closePath();
 }
 
-function processBall () {
+function processBall (frames) {
   if ((ball.y < ball.radius && ball.speedY < 0) || (ball.y > canvas.height - ball.radius && ball.speedY > 0)) {
     ball.speedY = -ball.speedY;
   }
@@ -165,11 +184,11 @@ function processBall () {
       fireRocket(paddleRight, -1);
     }
   }
-  ball.x += ball.speedX;
-  ball.y += ball.speedY;
+  ball.x += ball.speedX * frames;
+  ball.y += ball.speedY * frames;
 }
 
-function processPaddles () {
+function processPaddles (frames) {
   if (ball.left && gameType === 0) {
     autoPaddle(ball.x, ball.y, paddleLeft);
     autoPaddle(canvas.width / 2, canvas.height / 2, paddleRight);
@@ -178,11 +197,11 @@ function processPaddles () {
     autoPaddle(ball.x, ball.y, paddleRight);
     autoPaddle(canvas.width / 2, canvas.height / 2, paddleLeft);
   }
-  paddleLeft.y += paddleLeft.speedY;
-  paddleRight.y += paddleRight.speedY;
+  paddleLeft.y += paddleLeft.speedY * frames;
+  paddleRight.y += paddleRight.speedY * frames;
 }
 
-function processRockets () {
+function processRockets (frames) {
   for (let i = rockets.length - 1; i >= 0; i--) {
     let r = rockets[i];
     if (r.x < paddle.width && r.y >= paddleLeft.y && r.y <= paddleLeft.y + paddle.height) {
@@ -198,7 +217,7 @@ function processRockets () {
     if (r.x < 0 || r.x > canvas.width - rocket.width) {
       rockets.splice(i, 1);
     }
-    r.x += r.speed;
+    r.x += r.speed * frames;
   }
 }
 
