@@ -23,8 +23,8 @@ let gameType = 1;
 let resetType = true;
 
 let ball = {
-  x: canvas.width / 2 - 10,
-  y: canvas.height / 2 - 10,
+  x: canvas.width / 2,
+  y: canvas.height / 2,
   radius: 10,
   color: '#0095DD',
   angle: 60,
@@ -200,13 +200,18 @@ function processBall (frames) {
 }
 
 function processPaddles (frames) {
-  if (ball.left && gameType === 0) {
-    autoPaddle(ball.x, ball.y, paddleLeft);
-    autoPaddle(canvas.width / 2, canvas.height / 2, paddleRight);
-  }
-  if (!ball.left && (gameType === 0 || gameType === 1)) {
-    autoPaddle(ball.x, ball.y, paddleRight);
-    autoPaddle(canvas.width / 2, canvas.height / 2, paddleLeft);
+  if (gameType === 0 || gameType === 1) {
+    if (ball.left) {
+      if (gameType === 0) {
+        autoPaddle(ball.x, ball.y, paddleLeft);
+      }
+      autoPaddle(canvas.width / 2, canvas.height / 2, paddleRight);
+    } else {
+      if (gameType === 0) {
+        autoPaddle(canvas.width / 2, canvas.height / 2, paddleLeft);
+      }
+      autoPaddle(ball.x, ball.y, paddleRight);
+    }
   }
   paddleLeft.y += paddleLeft.speedY * frames;
   paddleRight.y += paddleRight.speedY * frames;
