@@ -5,7 +5,7 @@
 [![ECMAScript](https://img.shields.io/badge/ECMAScript-latest-brightgreen.svg)](https://www.ecma-international.org/ecma-262)
 [![license](https://img.shields.io/badge/license-GNU%20GPL%20v3.0-blue.svg)](https://github.com/berkerol/battle-pong/blob/master/LICENSE)
 
-Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles.
+Remake of the classic game with rockets and different game types. It may also work as a beautiful simulation when computer controls both of the paddles.
 
 [![button](play.png)](https://berkerol.github.io/battle-pong/battle-pong.html)
 

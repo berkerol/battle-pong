@@ -1,6 +1,6 @@
 # Battle Pong
 
-Remake of the classic game with rockets and different game types. Also a beautiful simulation when computer controls both of the paddles.
+Remake of the classic game with rockets and different game types. It may also work as a beautiful simulation when computer controls both of the paddles.
 
 [![button](play.png)](battle-pong.html)
 
