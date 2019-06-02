@@ -271,7 +271,7 @@ function intersects (r, c) {
   }
   const dX = distX - paddle.width / 2;
   const dY = distY - paddle.height / 2;
-  return (dX * dX + dY * dY <= (c.radius * c.radius));
+  return dX ** 2 + dY ** 2 <= c.radius ** 2;
 }
 
 function jump (p1, direction, p2) {
