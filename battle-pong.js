@@ -298,7 +298,7 @@ function autoPaddle (x, y, p) {
   p.speedY = dY / norm * p.speed;
 }
 
-function changeGame () {
+window.changeGame = function () {
   if (gameType === 2) {
     gameType = 0;
   } else {
@@ -307,16 +307,16 @@ function changeGame () {
   document.getElementById('change-game').innerHTML = gameType;
   paddleLeft.speedY = 0;
   paddleRight.speedY = 0;
-}
+};
 
-function changeReset () {
+window.changeReset = function () {
   resetType = !resetType;
   if (resetType) {
     document.getElementById('change-reset').innerHTML = 'Ce<span style="text-decoration: underline">n</span>ter';
   } else {
     document.getElementById('change-reset').innerHTML = 'Bou<span style="text-decoration: underline">n</span>ce';
   }
-}
+};
 
 function keyDownHandler (e) {
   if (e.keyCode === 38 && gameType === 2) {
