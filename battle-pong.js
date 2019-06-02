@@ -1,7 +1,7 @@
 /* global performance */
 /* global FPSMeter */
-let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -10,7 +10,7 @@ const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
 FPSMeter.theme.colorful.container.height = '40px';
-let meter = new FPSMeter({
+const meter = new FPSMeter({
   left: canvas.width - 130 + 'px',
   top: 'auto',
   bottom: '12px',
@@ -22,7 +22,7 @@ let meter = new FPSMeter({
 let gameType = 1;
 let resetType = true;
 
-let ball = {
+const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   radius: 10,
@@ -35,14 +35,14 @@ let ball = {
   left: false
 };
 
-let paddle = {
+const paddle = {
   width: 20,
   height: 150,
   arc: 10,
   color: '#0095DD'
 };
 
-let paddleLeft = {
+const paddleLeft = {
   x: 0,
   y: (canvas.height - 150) / 2,
   speed: 15,
@@ -52,7 +52,7 @@ let paddleLeft = {
   rockets: 0
 };
 
-let paddleRight = {
+const paddleRight = {
   x: canvas.width - 20,
   y: (canvas.height - 150) / 2,
   speed: 15,
@@ -62,7 +62,7 @@ let paddleRight = {
   rockets: 0
 };
 
-let rocket = {
+const rocket = {
   width: 30,
   lineWidth: 5,
   lineCap: 'round',
@@ -72,13 +72,13 @@ let rocket = {
   increment: 0.5
 };
 
-let label = {
+const label = {
   font: '24px Arial',
   color: '#0095DD',
   margin: 20
 };
 
-let line = {
+const line = {
   width: label.margin / 4,
   height: label.margin / 2,
   color: '#0095DD'
@@ -87,8 +87,8 @@ let line = {
 let lines = [];
 let rockets = [];
 
-let backgroundCanvas = document.createElement('canvas');
-let backgroundCtx = backgroundCanvas.getContext('2d');
+const backgroundCanvas = document.createElement('canvas');
+const backgroundCtx = backgroundCanvas.getContext('2d');
 resizeHandler();
 draw();
 document.addEventListener('keydown', keyDownHandler);
@@ -97,7 +97,7 @@ document.addEventListener('mousemove', mouseMoveHandler);
 window.addEventListener('resize', resizeHandler);
 
 function draw () {
-  let now = getTime();
+  const now = getTime();
   let ms = now - then;
   let frames = 0;
   then = now;
@@ -124,7 +124,7 @@ function draw () {
   ctx.shadowBlur = rocket.shadowBlur;
   ctx.shadowColor = rocket.color;
   ctx.strokeStyle = rocket.color;
-  for (let r of rockets) {
+  for (const r of rockets) {
     drawRocket(r);
   }
   ctx.restore();
@@ -219,7 +219,7 @@ function processPaddles (frames) {
 
 function processRockets (frames) {
   for (let i = rockets.length - 1; i >= 0; i--) {
-    let r = rockets[i];
+    const r = rockets[i];
     if (r.x < paddle.width && r.y >= paddleLeft.y && r.y <= paddleLeft.y + paddle.height) {
       paddleRight.score++;
       reset(false, true);
@@ -261,16 +261,16 @@ function reset (reset, rocket) {
 }
 
 function intersects (r, c) {
-  let distX = Math.abs(c.x - r.x - paddle.width / 2);
-  let distY = Math.abs(c.y - r.y - paddle.height / 2);
+  const distX = Math.abs(c.x - r.x - paddle.width / 2);
+  const distY = Math.abs(c.y - r.y - paddle.height / 2);
   if (distX > (paddle.width / 2 + c.radius) || distY > (paddle.height / 2 + c.radius)) {
     return false;
   }
   if (distX <= (paddle.width / 2) || distY <= (paddle.height / 2)) {
     return true;
   }
-  let dX = distX - paddle.width / 2;
-  let dY = distY - paddle.height / 2;
+  const dX = distX - paddle.width / 2;
+  const dY = distY - paddle.height / 2;
   return (dX * dX + dY * dY <= (c.radius * c.radius));
 }
 
@@ -278,7 +278,7 @@ function jump (p1, direction, p2) {
   p1.rockets += rocket.increment;
   ball.left = direction !== 1;
   p2.variance = Math.random() * paddle.height;
-  let x = (p1.y + paddle.height / 2.0 - ball.y) / (paddle.height / 2.0);
+  const x = (p1.y + paddle.height / 2.0 - ball.y) / (paddle.height / 2.0);
   ball.speedX = direction * ball.speed * Math.cos(x * ball.angle * Math.PI / 180);
   ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
 }
@@ -293,9 +293,9 @@ function fireRocket (p, direction) {
 }
 
 function autoPaddle (x, y, p) {
-  let dX = x - p.x;
-  let dY = y - p.y - p.variance;
-  let norm = Math.sqrt(dX ** 2 + dY ** 2);
+  const dX = x - p.x;
+  const dY = y - p.y - p.variance;
+  const norm = Math.sqrt(dX ** 2 + dY ** 2);
   p.speedY = dY / norm * p.speed;
 }
 
@@ -378,7 +378,7 @@ function resizeHandler () {
   backgroundCanvas.height = canvas.height;
   backgroundCtx.fillStyle = line.color;
   backgroundCtx.clearRect(0, 0, backgroundCtx.width, backgroundCtx.height);
-  for (let l of lines) {
+  for (const l of lines) {
     backgroundCtx.fillRect(l.x, l.y, line.width, line.height);
   }
 }
