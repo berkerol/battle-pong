@@ -6,16 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Battle Pong</title>
   <meta name="description" content="Remake of the classic game with rockets and different game types">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="battle-pong.css">
 </head>
 
 <body>
-  <div class="btn-group buttons">
-    <a class="btn btn-lg btn-info" onclick="changeGame()" accesskey="p"><span class="glyphicon glyphicon-transfer"></span> <span id="change-game">1</span> <span style="text-decoration: underline">P</span>layer</a>
-    <a class="btn btn-lg btn-info" onclick="changeReset()" accesskey="n"><span class="glyphicon glyphicon-refresh"></span> <span id="change-reset">Ce<span style="text-decoration: underline">n</span>ter</span></a>
+  <div class="btn-group btn-group-lg btn-group-center">
+    <button type="button" class="btn btn-info" onclick="changeGame()" accesskey="p"><i class="fas fa-user-friends"></i> <span id="change-game">1</span> <span style="text-decoration: underline">P</span>layer</button>
+    <button type="button" class="btn btn-info" onclick="changeReset()" accesskey="n"><i class="fas fa-sync"></i> <span id="change-reset">Ce<span style="text-decoration: underline">n</span>ter</span></button>
   </div>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
+  <script src="https://kit.fontawesome.com/a1c4b21e48.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fpsmeter/0.3.1/fpsmeter.min.js"></script>
   <script src="battle-pong.js"></script>
   <script>
