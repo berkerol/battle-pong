@@ -12,10 +12,26 @@
 
 <body>
   <div class="btn-group btn-group-lg btn-group-center">
-    <button type="button" class="btn btn-info" onclick="changeGame()" accesskey="p"><i class="fas fa-user-friends"></i> <span id="change-game">1</span> <span style="text-decoration: underline">P</span>layer</button>
-    <button type="button" class="btn btn-info" onclick="changeReset()" accesskey="n"><i class="fas fa-sync"></i> <span id="change-reset">Ce<span style="text-decoration: underline">n</span>ter</span></button>
+    <div class="btn-group btn-group-lg">
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" accesskey="p"><i class="fas fa-user-friends"></i> <span id="change-game-text">1</span> <u>P</u>layer</button>
+      <div class="dropdown-menu" id="change-game">
+        <button type="button" class="dropdown-item" data-value="0">0 Player</button>
+        <button type="button" class="dropdown-item" data-value="1">1 Player</button>
+        <button type="button" class="dropdown-item" data-value="2">2 Player</button>
+      </div>
+    </div>
+    <div class="btn-group btn-group-lg">
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" accesskey="r"><i class="fas fa-sync"></i> <span id="change-reset-text">Change <u>r</u>eset</span></button>
+      <div class="dropdown-menu" id="change-reset">
+        <button type="button" class="dropdown-item" data-value="1">Restart from center</button>
+        <button type="button" class="dropdown-item" data-value="0">Bounce from edge</button>
+      </div>
+    </div>
   </div>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/a1c4b21e48.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fpsmeter/0.3.1/fpsmeter.min.js"></script>
   <script src="battle-pong.js"></script>

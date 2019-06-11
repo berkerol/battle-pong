@@ -90,6 +90,20 @@ const backgroundCanvas = document.createElement('canvas');
 const backgroundCtx = backgroundCanvas.getContext('2d');
 resizeHandler();
 draw();
+document.querySelectorAll('#change-game .dropdown-item').forEach(e => {
+  e.addEventListener('click', function () {
+    document.getElementById('change-game-text').innerHTML = this.dataset.value;
+    gameType = +this.dataset.value;
+    paddleLeft.speedY = 0;
+    paddleRight.speedY = 0;
+  });
+});
+document.querySelectorAll('#change-reset .dropdown-item').forEach(e => {
+  e.addEventListener('click', function () {
+    document.getElementById('change-reset-text').innerHTML = this.innerHTML;
+    resetType = !!+this.dataset.value;
+  });
+});
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 document.addEventListener('mousemove', mouseMoveHandler);
@@ -297,26 +311,6 @@ function autoPaddle (x, y, p) {
   const norm = Math.sqrt(dX ** 2 + dY ** 2);
   p.speedY = dY / norm * p.speed;
 }
-
-window.changeGame = function () {
-  if (gameType === 2) {
-    gameType = 0;
-  } else {
-    gameType++;
-  }
-  document.getElementById('change-game').innerHTML = gameType;
-  paddleLeft.speedY = 0;
-  paddleRight.speedY = 0;
-};
-
-window.changeReset = function () {
-  resetType = !resetType;
-  if (resetType) {
-    document.getElementById('change-reset').innerHTML = 'Ce<span style="text-decoration: underline">n</span>ter';
-  } else {
-    document.getElementById('change-reset').innerHTML = 'Bou<span style="text-decoration: underline">n</span>ce';
-  }
-};
 
 function keyDownHandler (e) {
   if (e.keyCode === 38 && gameType === 2) {
