@@ -126,21 +126,27 @@ function draw () {
   meter.tick();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backgroundCanvas, 0, 0);
-  ctx.fillStyle = ball.color;
   drawBall();
   ctx.fillStyle = paddle.color;
+  ctx.beginPath();
   drawPaddle(paddleLeft);
   drawPaddle(paddleRight);
-  ctx.save();
-  ctx.lineWidth = rocket.lineWidth;
-  ctx.lineCap = rocket.lineCap;
-  ctx.shadowBlur = rocket.shadowBlur;
-  ctx.shadowColor = rocket.color;
-  ctx.strokeStyle = rocket.color;
-  for (const r of rockets) {
-    drawRocket(r);
+  ctx.fill();
+  if (rockets.length > 0) {
+    ctx.save();
+    ctx.lineWidth = rocket.lineWidth;
+    ctx.lineCap = rocket.lineCap;
+    ctx.shadowBlur = rocket.shadowBlur;
+    ctx.shadowColor = rocket.color;
+    ctx.strokeStyle = rocket.color;
+    ctx.beginPath();
+    for (const r of rockets) {
+      ctx.moveTo(r.x, r.y);
+      ctx.lineTo(r.x + rocket.width, r.y);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
-  ctx.restore();
   ctx.font = label.font;
   ctx.fillStyle = label.color;
   ctx.fillText('Score: ' + paddleLeft.score, 10, label.margin);
@@ -154,14 +160,13 @@ function draw () {
 }
 
 function drawBall () {
+  ctx.fillStyle = ball.color;
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
   ctx.fill();
-  ctx.closePath();
 }
 
 function drawPaddle (p) {
-  ctx.beginPath();
   ctx.moveTo(p.x + paddle.arc, p.y);
   ctx.lineTo(p.x + paddle.width - paddle.arc, p.y);
   ctx.quadraticCurveTo(p.x + paddle.width, p.y, p.x + paddle.width, p.y + paddle.arc);
@@ -171,16 +176,6 @@ function drawPaddle (p) {
   ctx.quadraticCurveTo(p.x, p.y + paddle.height, p.x, p.y + paddle.height - paddle.arc);
   ctx.lineTo(p.x, p.y + paddle.arc);
   ctx.quadraticCurveTo(p.x, p.y, p.x + paddle.arc, p.y);
-  ctx.fill();
-  ctx.closePath();
-}
-
-function drawRocket (r) {
-  ctx.beginPath();
-  ctx.moveTo(r.x, r.y);
-  ctx.lineTo(r.x + rocket.width, r.y);
-  ctx.stroke();
-  ctx.closePath();
 }
 
 function processBall (frames) {
