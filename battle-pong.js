@@ -74,7 +74,9 @@ const rocket = {
 const label = {
   font: '24px Arial',
   color: '#0095DD',
-  margin: 20
+  margin: 20,
+  left: 10,
+  right: canvas.width - 120
 };
 
 const line = {
@@ -149,10 +151,10 @@ function draw () {
   }
   ctx.font = label.font;
   ctx.fillStyle = label.color;
-  ctx.fillText('Score: ' + paddleLeft.score, 10, label.margin);
-  ctx.fillText('Rockets: ' + Math.floor(paddleLeft.rockets), 10, 2 * label.margin);
-  ctx.fillText('Score: ' + paddleRight.score, canvas.width - 120, label.margin);
-  ctx.fillText('Rockets: ' + Math.floor(paddleRight.rockets), canvas.width - 120, 2 * label.margin);
+  ctx.fillText('Score: ' + paddleLeft.score, label.left, label.margin);
+  ctx.fillText('Rockets: ' + Math.floor(paddleLeft.rockets), label.left, 2 * label.margin);
+  ctx.fillText('Score: ' + paddleRight.score, label.right, label.margin);
+  ctx.fillText('Rockets: ' + Math.floor(paddleRight.rockets), label.right, 2 * label.margin);
   processBall(frames);
   processPaddles(frames);
   processRockets(frames);
