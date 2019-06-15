@@ -288,7 +288,7 @@ function jump (p1, direction, p2) {
   p1.rockets += rocket.increment;
   ball.left = direction !== 1;
   p2.variance = Math.random() * paddle.height;
-  const x = (p1.y + paddle.height / 2.0 - ball.y) / (paddle.height / 2.0);
+  const x = (p1.y + paddle.height / 2 - ball.y) / (paddle.height / 2);
   ball.speedX = direction * ball.speed * Math.cos(x * ball.angle * Math.PI / 180);
   ball.speedY = -ball.speed * Math.sin(x * ball.angle * Math.PI / 180);
 }
