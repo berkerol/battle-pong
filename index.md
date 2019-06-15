@@ -21,19 +21,21 @@ Remake of the classic game with rockets and different game types. It may also wo
 
   - Left paddle
 
-    - Moves up by pressing _W_.
-    - Moves down by pressing _S_.
+    - Goes up by pressing _W_.
+    - Goes down by pressing _S_.
 
   - Right paddle
 
-    - Moves up by pressing _UP_.
-    - Moves down by pressing _DOWN_.
+    - Goes up by pressing _UP_.
+    - Goes down by pressing _DOWN_.
 
 - Left paddle fires rockets by pressing _D_.
 
 - Right paddle fires rockets by pressing _LEFT_.
 
 - Reset the ball by pressing _R_.
+
+- Pause the game by pressing _P_.
 
 - Click buttons to change game type and reset type.
 

@@ -8,6 +8,7 @@ const getTime = typeof performance === 'function' ? performance.now : Date.now;
 const FRAME_DURATION = 1000 / 58;
 let then = getTime();
 let acc = 0;
+let animation;
 FPSMeter.theme.colorful.container.height = '40px';
 const meter = new FPSMeter({
   left: canvas.width - 130 + 'px',
@@ -158,7 +159,7 @@ function draw () {
   processBall(frames);
   processPaddles(frames);
   processRockets(frames);
-  window.requestAnimationFrame(draw);
+  animation = window.requestAnimationFrame(draw);
 }
 
 function drawBall () {
@@ -310,44 +311,58 @@ function autoPaddle (x, y, p) {
 }
 
 function keyDownHandler (e) {
-  if (e.keyCode === 38 && gameType === 2) {
-    paddleRight.speedY = -paddleRight.speed;
-  }
-  if (e.keyCode === 40 && gameType === 2) {
-    paddleRight.speedY = paddleRight.speed;
-  }
-  if (e.keyCode === 87 && (gameType === 1 || gameType === 2)) {
-    paddleLeft.speedY = -paddleLeft.speed;
-  }
-  if (e.keyCode === 83 && (gameType === 1 || gameType === 2)) {
-    paddleLeft.speedY = paddleLeft.speed;
+  if (animation !== undefined) {
+    if (e.keyCode === 38 && gameType === 2) {
+      paddleRight.speedY = -paddleRight.speed;
+    }
+    if (e.keyCode === 40 && gameType === 2) {
+      paddleRight.speedY = paddleRight.speed;
+    }
+    if (e.keyCode === 87 && (gameType === 1 || gameType === 2)) {
+      paddleLeft.speedY = -paddleLeft.speed;
+    }
+    if (e.keyCode === 83 && (gameType === 1 || gameType === 2)) {
+      paddleLeft.speedY = paddleLeft.speed;
+    }
   }
 }
 
 function keyUpHandler (e) {
-  if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 2) {
-    paddleRight.speedY = 0;
+  if (animation !== undefined) {
+    if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 2) {
+      paddleRight.speedY = 0;
+    }
+    if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 1 || gameType === 2)) {
+      paddleLeft.speedY = 0;
+    }
+    if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets >= 1) {
+      fireRocket(paddleRight, -1);
+    }
+    if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets >= 1) {
+      fireRocket(paddleLeft, 1);
+    }
+    if (e.keyCode === 82) {
+      reset(true, false);
+    }
   }
-  if ((e.keyCode === 87 || e.keyCode === 83) && (gameType === 1 || gameType === 2)) {
-    paddleLeft.speedY = 0;
-  }
-  if (e.keyCode === 37 && gameType === 2 && paddleRight.rockets >= 1) {
-    fireRocket(paddleRight, -1);
-  }
-  if (e.keyCode === 68 && (gameType === 1 || gameType === 2) && paddleLeft.rockets >= 1) {
-    fireRocket(paddleLeft, 1);
-  }
-  if (e.keyCode === 82) {
-    reset(true, false);
+  if (e.keyCode === 80) {
+    if (animation === undefined) {
+      animation = window.requestAnimationFrame(draw);
+    } else {
+      window.cancelAnimationFrame(animation);
+      animation = undefined;
+    }
   }
 }
 
 function mouseMoveHandler (e) {
-  if (gameType === 1 || (gameType === 2 && e.clientX < canvas.width / 2)) {
-    paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
-  }
-  if (gameType === 2 && e.clientX >= canvas.width / 2) {
-    paddleRight.y = e.clientY - canvas.offsetTop - paddle.height / 2;
+  if (animation !== undefined) {
+    if (gameType === 1 || (gameType === 2 && e.clientX < canvas.width / 2)) {
+      paddleLeft.y = e.clientY - canvas.offsetTop - paddle.height / 2;
+    }
+    if (gameType === 2 && e.clientX >= canvas.width / 2) {
+      paddleRight.y = e.clientY - canvas.offsetTop - paddle.height / 2;
+    }
   }
 }
 
