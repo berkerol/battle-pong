@@ -1,25 +1,4 @@
-/* global performance FPSMeter */
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const getTime = typeof performance === 'function' ? performance.now : Date.now;
-const FRAME_THRESHOLD = 300;
-const FRAME_DURATION = 1000 / 58;
-let then = getTime();
-let acc = 0;
-let animation;
-FPSMeter.theme.colorful.container.height = '40px';
-const meter = new FPSMeter({
-  left: canvas.width - 130 + 'px',
-  top: 'auto',
-  bottom: '12px',
-  theme: 'colorful',
-  heat: 1,
-  graph: 1
-});
-
+/* global canvas ctx animation:writable gameLoop label loop paintCircle drawLine drawRoundRect isIntersectingRectangleWithCircle */
 let gameType = 1;
 let resetType = true;
 
@@ -73,14 +52,6 @@ const rocket = {
   increment: 0.5
 };
 
-const label = {
-  font: '24px Arial',
-  color: '#0095DD',
-  margin: 20,
-  left: 10,
-  right: canvas.width - 120
-};
-
 const line = {
   width: label.margin / 4,
   height: label.margin / 2,
@@ -93,7 +64,6 @@ let rockets = [];
 const backgroundCanvas = document.createElement('canvas');
 const backgroundCtx = backgroundCanvas.getContext('2d');
 resizeHandler();
-draw();
 document.querySelectorAll('#change-game .dropdown-item').forEach(e => {
   e.addEventListener('click', function () {
     document.getElementById('change-game-text').innerHTML = this.dataset.value;
@@ -113,26 +83,13 @@ document.addEventListener('keyup', keyUpHandler);
 document.addEventListener('mousemove', mouseMoveHandler);
 window.addEventListener('resize', resizeHandler);
 
-function draw () {
-  const now = getTime();
-  let ms = now - then;
-  let frames = 0;
-  then = now;
-  if (ms < FRAME_THRESHOLD) {
-    acc += ms;
-    while (acc >= FRAME_DURATION) {
-      frames++;
-      acc -= FRAME_DURATION;
-    }
-  }
-  meter.tick();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+loop(function (frames) {
   ctx.drawImage(backgroundCanvas, 0, 0);
-  drawBall();
+  paintCircle(ball.x, ball.y, ball.radius, ball.color);
   ctx.fillStyle = paddle.color;
   ctx.beginPath();
-  drawPaddle(paddleLeft);
-  drawPaddle(paddleRight);
+  drawRoundRect(paddleLeft.x, paddleLeft.y, paddle.width, paddle.height, paddle.arc, paddle.arc);
+  drawRoundRect(paddleRight.x, paddleRight.y, paddle.width, paddle.height, paddle.arc, paddle.arc);
   ctx.fill();
   if (rockets.length > 0) {
     ctx.save();
@@ -143,8 +100,7 @@ function draw () {
     ctx.strokeStyle = rocket.color;
     ctx.beginPath();
     for (const r of rockets) {
-      ctx.moveTo(r.x, r.y);
-      ctx.lineTo(r.x + rocket.width, r.y);
+      drawLine(r.x, r.y, r.x + rocket.width, r.y);
     }
     ctx.stroke();
     ctx.restore();
@@ -158,27 +114,7 @@ function draw () {
   processBall(frames);
   processPaddles(frames);
   processRockets(frames);
-  animation = window.requestAnimationFrame(draw);
-}
-
-function drawBall () {
-  ctx.fillStyle = ball.color;
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
-  ctx.fill();
-}
-
-function drawPaddle (p) {
-  ctx.moveTo(p.x + paddle.arc, p.y);
-  ctx.lineTo(p.x + paddle.width - paddle.arc, p.y);
-  ctx.quadraticCurveTo(p.x + paddle.width, p.y, p.x + paddle.width, p.y + paddle.arc);
-  ctx.lineTo(p.x + paddle.width, p.y + paddle.height - paddle.arc);
-  ctx.quadraticCurveTo(p.x + paddle.width, p.y + paddle.height, p.x + paddle.width - paddle.arc, p.y + paddle.height);
-  ctx.lineTo(p.x + paddle.arc, p.y + paddle.height);
-  ctx.quadraticCurveTo(p.x, p.y + paddle.height, p.x, p.y + paddle.height - paddle.arc);
-  ctx.lineTo(p.x, p.y + paddle.arc);
-  ctx.quadraticCurveTo(p.x, p.y, p.x + paddle.arc, p.y);
-}
+});
 
 function processBall (frames) {
   if ((ball.y < ball.radius && ball.speedY < 0) || (ball.y > canvas.height - ball.radius && ball.speedY > 0)) {
@@ -193,13 +129,13 @@ function processBall (frames) {
     }
     reset(false, false);
   }
-  if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && intersects(paddleLeft, ball)) {
+  if (ball.x < paddle.width + ball.radius && ball.speedX < 0 && isIntersectingRectangleWithCircle(paddleLeft, paddle.width, paddle.height, ball, ball.radius)) {
     jump(paddleLeft, 1, paddleRight);
     if (gameType === 0 && (paddleLeft.rockets >= 2 || (paddleLeft.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleLeft, 1);
     }
   }
-  if (ball.x > canvas.width - paddle.width - ball.radius && ball.speedX > 0 && intersects(paddleRight, ball)) {
+  if (ball.x > canvas.width - paddle.width - ball.radius && ball.speedX > 0 && isIntersectingRectangleWithCircle(paddleRight, paddle.width, paddle.height, ball, ball.radius)) {
     jump(paddleRight, -1, paddleLeft);
     if ((gameType === 0 || gameType === 1) && (paddleRight.rockets >= 2 || (paddleRight.rockets >= 1 && ball.speedY < ball.rocketThreshold && ball.speedY > -ball.rocketThreshold))) {
       fireRocket(paddleRight, -1);
@@ -270,20 +206,6 @@ function reset (reset, rocket) {
   rockets = [];
 }
 
-function intersects (r, c) {
-  const distX = Math.abs(c.x - r.x - paddle.width / 2);
-  const distY = Math.abs(c.y - r.y - paddle.height / 2);
-  if (distX > (paddle.width / 2 + c.radius) || distY > (paddle.height / 2 + c.radius)) {
-    return false;
-  }
-  if (distX <= (paddle.width / 2) || distY <= (paddle.height / 2)) {
-    return true;
-  }
-  const dX = distX - paddle.width / 2;
-  const dY = distY - paddle.height / 2;
-  return dX ** 2 + dY ** 2 <= c.radius ** 2;
-}
-
 function jump (p1, direction, p2) {
   p1.rockets += rocket.increment;
   ball.left = direction !== 1;
@@ -346,7 +268,7 @@ function keyUpHandler (e) {
   }
   if (e.keyCode === 80) {
     if (animation === undefined) {
-      animation = window.requestAnimationFrame(draw);
+      animation = window.requestAnimationFrame(gameLoop);
     } else {
       window.cancelAnimationFrame(animation);
       animation = undefined;
