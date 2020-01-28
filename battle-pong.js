@@ -1,4 +1,4 @@
-/* global canvas ctx animation:writable gameLoop label loop paintCircle drawLine drawRoundRect isIntersectingRectangleWithCircle */
+/* global canvas ctx animation:writable gameLoop label loop paintCircle drawLine drawRoundRect isIntersectingRectangleWithCircle createDropdownRow */
 let gameType = 1;
 let resetType = true;
 
@@ -61,6 +61,9 @@ const line = {
 let lines = [];
 let rockets = [];
 
+const dropdownElements = [[['info dropdown-toggle', '', 'p', 'user-friends', '<span id="change-game-text">1</span> <u>P</u>layer'], 'change-game', [['0', '0 Player'], ['1', '1 Player'], ['2', '2 Players']]], [['info dropdown-toggle', '', 'r', 'sync', '<span id="change-reset-text">Change <u>r</u>eset</span>'], 'change-reset', [['1', 'Restart from center'], ['0', 'Bounce from edge']]]];
+const dropdownRow = createDropdownRow(dropdownElements);
+document.body.insertBefore(dropdownRow, canvas);
 const backgroundCanvas = document.createElement('canvas');
 const backgroundCtx = backgroundCanvas.getContext('2d');
 resizeHandler();
@@ -78,8 +81,8 @@ document.querySelectorAll('#change-reset .dropdown-item').forEach(e => {
     resetType = !!+this.dataset.value;
   });
 });
-document.addEventListener('keydown', keyDownHandler);
-document.addEventListener('keyup', keyUpHandler);
+document.addEventListener('keydown', keyDownHandler_);
+document.addEventListener('keyup', keyUpHandler_);
 document.addEventListener('mousemove', mouseMoveHandler);
 window.addEventListener('resize', resizeHandler);
 
@@ -231,7 +234,7 @@ function autoPaddle (x, y, p) {
   p.speedY = dY / norm * p.speed;
 }
 
-function keyDownHandler (e) {
+function keyDownHandler_ (e) {
   if (animation !== undefined) {
     if (e.keyCode === 38 && gameType === 2) {
       paddleRight.speedY = -paddleRight.speed;
@@ -248,7 +251,7 @@ function keyDownHandler (e) {
   }
 }
 
-function keyUpHandler (e) {
+function keyUpHandler_ (e) {
   if (animation !== undefined) {
     if ((e.keyCode === 38 || e.keyCode === 40) && gameType === 2) {
       paddleRight.speedY = 0;

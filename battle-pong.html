@@ -20,27 +20,11 @@
   <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/fpsmeter/0.3.1/fpsmeter.min.js"></script>
   <script defer src="https://berkerol.github.io/libraries/canvas.js"></script>
+  <script defer src="https://berkerol.github.io/libraries/form.js"></script>
   <script defer src="battle-pong.js"></script>
 </head>
 
 <body>
-  <div class="btn-group btn-group-lg btn-group-center">
-    <div class="btn-group btn-group-lg">
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" accesskey="p"><i class="fas fa-user-friends"></i> <span id="change-game-text">1</span> <u>P</u>layer</button>
-      <div class="dropdown-menu" id="change-game">
-        <button type="button" class="dropdown-item" data-value="0">0 Player</button>
-        <button type="button" class="dropdown-item" data-value="1">1 Player</button>
-        <button type="button" class="dropdown-item" data-value="2">2 Player</button>
-      </div>
-    </div>
-    <div class="btn-group btn-group-lg">
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" accesskey="r"><i class="fas fa-sync"></i> <span id="change-reset-text">Change <u>r</u>eset</span></button>
-      <div class="dropdown-menu" id="change-reset">
-        <button type="button" class="dropdown-item" data-value="1">Restart from center</button>
-        <button type="button" class="dropdown-item" data-value="0">Bounce from edge</button>
-      </div>
-    </div>
-  </div>
   <canvas id="canvas">Your browser doesn't support HTML5.</canvas>
 </body>
 
