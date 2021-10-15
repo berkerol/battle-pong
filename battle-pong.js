@@ -69,8 +69,8 @@ const backgroundCtx = backgroundCanvas.getContext('2d');
 resizeHandler();
 document.querySelectorAll('#change-game .dropdown-item').forEach(e => {
   e.addEventListener('click', function () {
-    document.getElementById('change-game-text').innerHTML = this.dataset.value;
-    gameType = +this.dataset.value;
+    document.getElementById('change-game-text').innerHTML = this.dataset.bsValue;
+    gameType = +this.dataset.bsValue;
     paddleLeft.speedY = 0;
     paddleRight.speedY = 0;
   });
@@ -78,7 +78,7 @@ document.querySelectorAll('#change-game .dropdown-item').forEach(e => {
 document.querySelectorAll('#change-reset .dropdown-item').forEach(e => {
   e.addEventListener('click', function () {
     document.getElementById('change-reset-text').innerHTML = this.innerHTML;
-    resetType = !!+this.dataset.value;
+    resetType = !!+this.dataset.bsValue;
   });
 });
 document.addEventListener('keydown', keyDownHandler_);
